@@ -18,6 +18,7 @@ tipos.cuantitativos <- tipos[-c(9,10)]
 ######################################
 
 datos.cualitativos <- notas[tipos.cualitativos]
+# Analisis descriptivo usando summary.
 analisis.cualitativo <- datos.cualitativos %<$>% (summary %<$>% factor)
 
 
@@ -48,6 +49,7 @@ pairs %<$>% plot.pairs
 
 
 datos.cuantitativos <- notas[tipos.cuantitativos]
+# Analisis descriptivo usando summary.
 analisis.cuantitativo <- datos.cuantitativos %<$>% summary
 analisis.cuantitativo %<$>% sd
 analisis.cuantitativo %<$>% IQR
@@ -88,6 +90,29 @@ extra.hacky <- hacky.plot()
 par(mfrow=c(1,2))
 res <- datos.cuantitativos %<$>% extra.hacky
 
+
+# Y un plot en conjunto.
 par(mfrow=c(1,1))
 boxplot(datos.cuantitativos,main="Boxplot de Datos Conjuntos",
         ylab="Notas",col=col)
+
+# Finalmente, realizamos un analisis cruzado de las carreras vs notas
+# para comprobar la hipotesis:
+
+# Clausura para nombres de carrera
+main <- map(names(datos.cuantitativos),
+           function (x)  paste("Boxplot de Carreras vs ",x) )
+carrera.nota.aux <- function () {
+     i <- 0
+     function (x) {
+          i <<- i+1
+          boxplot(split(x,Car), ylab="Nota",col=col,
+                  main = main[i])
+     }
+}
+
+# Diagramas mixtos de las carreras vs notas
+carrera.nota <- carrera.nota.aux()
+datos.cuantitativos %<$>% carrera.nota
+
+
