@@ -72,5 +72,6 @@ zip <- function(x,y) {
 # uncurry :: (a -> b -> c) -> (a,b) -> c
 uncurry <- function(f,t) {
         f(t[1],t[2])
-
 }
+
+
