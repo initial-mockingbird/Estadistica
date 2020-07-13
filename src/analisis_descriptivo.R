@@ -73,7 +73,8 @@ mainb <- unlist(tipos.cuantitativos %<$>% partial(paste,"Boxplot de"))
 
 gen_plotting <- function (x,y,z){
      p1 <- ggplot(df,aes(x=x)) +
-          geom_histogram(colour="black",fill="white") +
+          geom_histogram(aes(y=..density..),colour="black",fill="white") +
+          geom_density(alpha=.5,fill="#4605ff") +
           labs(title=y,x="Notas",y="Frecuencias") +
           theme(plot.title = element_text(hjust = 0.5,face="bold"))
 
