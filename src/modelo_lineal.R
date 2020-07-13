@@ -81,32 +81,6 @@ predict.int <- data.frame(predict(ln.Y.5,notas_predict,interval="prediction"))
 predict.int$fit <- round(predict.int$fit)
 conf.int <- data.frame(predict(ln.Y.5,notas_predict,interval="confidence"))
 
-y.real.hist <- ggplot(notas_predict,aes(x=Y,fill=..density..)) +
-        geom_histogram(aes(y=..density..), binwidth = 2) +
-        geom_density(alpha=.5,fill="#50BE97") +
-        labs(title="Notas Reales",y="Frecuencias",x="Y real") +
-        theme(plot.title = element_text(hjust = 0.5,face="bold"),legend.position="none") +
-        scale_fill_gradient(low="#245745",high="#50BE97")
-
-y.predict.hist <- ggplot(predict.int,aes(x=fit,fill=..density..)) +
-        geom_histogram(aes(y=..density..),binwidth = 2) +
-        geom_density(alpha=.5,fill="#50BE97") +
-        labs(title="Notas Y~MA1+MA2+MA3",y="Frecuencias",x="Y Modelo") +
-        theme(plot.title = element_text(hjust = 0.5,face="bold"),legend.position="none") +
-        scale_fill_gradient(low="#245745",high="#50BE97")
-
-grid.arrange(y.real.hist,y.predict.hist,nrow=1)
-
-ys <- data.frame(notas_predict$Y,predict.int$fit)
-names(ys) <- c("Y_Real","Y_Estimado")
-
-y.real.bp <- ggplot(stack(ys),aes(x=ind,y=values,fill=ind)) +
-        geom_boxplot() +
-        labs(title="Boxplot Real vs Estimado",x="",y="Notas") +
-        theme(plot.title = element_text(hjust = 0.5,face="bold")) +
-        scale_fill_manual(values=c("#50BE97","#50BE97"))
-y.real.bp
-
 y.res <- data.frame(notas_predict$Y-predict.int$fit)
 names(y.res) <- c("Residuos_de_prediccion")
 
